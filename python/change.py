@@ -1,6 +1,5 @@
 ### NOTE 18.01 and 17.49 are 2 identified failing arguments
 from sys import argv
-# AMT = 99.99
 def get_max_val(dict_to_search:dict) -> str:
     """
     Returns the key of the max value of a dict
@@ -9,7 +8,9 @@ def get_max_val(dict_to_search:dict) -> str:
 
 def print_map(dict_to_print:dict) -> None:
     d = {k:v for k,v in dict_to_print.items() if v != 0}
-    print(d)
+    for k,v in d.items():
+        print(f"{k}: {v}")
+    
 
 def change(amt:float):
     """
