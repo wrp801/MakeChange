@@ -1,2 +1,5 @@
 */.vscode/
 __pychache__
+*/.o
+*/.exe
+

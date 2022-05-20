@@ -26,7 +26,7 @@ function print_dict(coins::Base.Array{String,1},d::Base.Dict{String,Int64})
 	end
 end
 
-function make_change(amt::Base.Number)
+function make_change(amt::Base.Integer)
 	mapping = Dict(
 		"Dollar100" => 10000,
 		"Dollar50" => 5000,
@@ -58,7 +58,7 @@ end
 function main(amt::String)
 	coins = ["Penny","Nickel","Dime","Quarter","Dollar1","Dollar5","Dollar10","Dollar20","Dollar50","Dollar100"]
 	amt_val = parse(Float32,amt)
-	cent_amt = amt_val * 100
+	cent_amt = Integer(round(amt_val * 100,digits = 0))
 	filtered_dict = make_change(cent_amt)
 	coins_filt = filter(c -> c in keys(filtered_dict),coins)
 	print_dict(coins_filt,filtered_dict)
