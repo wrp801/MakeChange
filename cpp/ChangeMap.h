@@ -2,9 +2,10 @@
 #include <iostream>
 using namespace std;
 
+// #define MONEY = {"Dollar100","Dollar50","Dollar20","Dollar10","Dollar5","Dollar1","quarter","dime","nickel","penny"};
+
 namespace change 
 {
-
 	class ChangeMap
 	{
 		public:
@@ -48,7 +49,13 @@ namespace change
 			 */
 			for (auto B= values.begin(), E = values.end(); B != E; ++B)
 			{
-				cout << B->first << " : " << B->second << endl;
+				string key = B->first;
+				int val = B->second;
+				if (val != 0)
+				{
+					cout << key << " : " << val << endl;
+
+				}
 			}
 		}
 
