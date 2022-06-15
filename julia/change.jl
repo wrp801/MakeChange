@@ -63,6 +63,7 @@ function main(amt::String)
 	filtered_dict = make_change(cent_amt)
 	coins_filt = filter(c -> c in keys(filtered_dict),coins)
 	print_dict(coins_filt,filtered_dict)
+	println("====================================")
 end
 
 ## Run the script 

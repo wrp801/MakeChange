@@ -16,6 +16,7 @@ int main(int argc, char const *argv[])
 		cout << "For " << "$" << amount_to_change << ":" << endl;
 		make_change(cm,&counter,amount_to_change);
 		counter.printMap();
+		cout << "====================================" << endl;
 	}
 	return 0;
 }

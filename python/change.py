@@ -39,7 +39,7 @@ def change(amt:float):
         change_map[max_key] += 1
     
     print_map(change_map)
-    print("=============================")
+    print("====================================")
     return change_amt
 
 if __name__  == '__main__':
