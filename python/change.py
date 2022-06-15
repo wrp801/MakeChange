@@ -1,4 +1,3 @@
-### NOTE 18.01 and 17.49 are 2 identified failing arguments
 from sys import argv
 def get_max_val(dict_to_search:dict) -> str:
     """
@@ -9,7 +8,7 @@ def get_max_val(dict_to_search:dict) -> str:
 def print_map(dict_to_print:dict) -> None:
     d = {k:v for k,v in dict_to_print.items() if v != 0}
     for k,v in d.items():
-        print(f"{k}: {v}")
+        print(f"\t{k}: {v}")
     
 
 def change(amt:float):
@@ -17,16 +16,16 @@ def change(amt:float):
     This will make the optimal amount of change given the amount. The amount is represented in terms of dollars
     """
     mapping = {
-        'penny': 1,
-        'nickel': 5,
-        'dime': 10,
-        'quarter': 25,
-        'dollar1': 100,
-        'dollar5': 500,
-        'dollar10': 1000,
-        'dollar20': 2000,
-        'dollar50': 5000,
-        'dollar100': 10000
+        'Penny': 1,
+        'Nickel': 5,
+        'Dime': 10,
+        'Quarter': 25,
+        'Dollar1': 100,
+        'Dollar5': 500,
+        'Dollar10': 1000,
+        'Dollar20': 2000,
+        'Dollar50': 5000,
+        'Dollar100': 10000
     }
     cent_val = amt * 1 ## convert the amount to cents to match the mapping
     change_amt = 0 
@@ -40,10 +39,15 @@ def change(amt:float):
         change_map[max_key] += 1
     
     print_map(change_map)
+    print("====================================")
     return change_amt
 
 if __name__  == '__main__':
-    amt = float(argv[1]) ## convert command line args to float
-    amt = round(amt * 100,0) ## convert the value to cents, and round just in case of floating point errors 
-    change(amt)
+    for (i,arg) in enumerate(argv):
+        if i == 0:
+            continue
+        amt = float(arg) ## convert command line args to float
+        print(f"For ${amt}:")
+        amt = round(amt * 100,0) ## convert the value to cents, and round just in case of floating point errors 
+        change(amt)
 

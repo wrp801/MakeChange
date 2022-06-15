@@ -19,7 +19,7 @@ fn filter_map(input: HashMap<String,i32>,amount:i32) -> HashMap<String,i32> {
 fn print_map(map: HashMap<String,i32>) {
     for (k,v) in map.iter() {
         if *v > 0 {
-            println!("{}: {}",k,v)
+            println!("\t {}: {}",k,v)
         }
     }
 }
@@ -86,20 +86,21 @@ fn make_change(amt:i32) -> HashMap<String,i32> {
 
 fn main() {
     let args: std::vec::Vec<_> = env::args().collect();
-    if args.len() > 2 {
-        println!("Error: Please only enter one value, not multiple");
-        return;
-    }
-
     if args.len() == 1 {
         println!("Error: Please enter a value to find the optimal value of change in USD");
         return;
     }
 
-    let amt = &args[1]; // get the amount as a str type
-    let new_amt:f32 = amt.parse().unwrap(); // convert amount to a float
-    let amt_int:i32 = (new_amt * 100.00) as i32;  // convert to int and to cents
+    let len = args.len();
+    for i in 1..len {
+        let amt = &args[i]; // get the amount as a str type
+        let new_amt:f64 = amt.parse().unwrap(); // convert amount to a double
+        let amt_int:i32 = (new_amt * 100.00) as i32;  // convert to int and to cents
+        println!("Amount is {}",amt_int);
 
-    let result = make_change(amt_int);
-    print_map(result);
+        let result = make_change(amt_int);
+        println!("For ${}:",new_amt);
+        print_map(result);
+        println!("====================================");
+    }
 }

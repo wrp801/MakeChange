@@ -1,9 +1,6 @@
 #include <map>
 #include <iostream>
 using namespace std;
-
-// #define MONEY = {"Dollar100","Dollar50","Dollar20","Dollar10","Dollar5","Dollar1","quarter","dime","nickel","penny"};
-
 namespace change 
 {
 	class ChangeMap
@@ -15,10 +12,10 @@ namespace change
 		{
 			if (empty) 
 			{
-				values.insert({"penny",0});
-				values.insert({"nickel",0});
-				values.insert({"dime",0});
-				values.insert({"quarter",0});
+				values.insert({"Penny",0});
+				values.insert({"Nickel",0});
+				values.insert({"Dime",0});
+				values.insert({"Quarter",0});
 				values.insert({"Dollar1",0});
 				values.insert({"Dollar5",0});
 				values.insert({"Dollar10",0});
@@ -28,10 +25,10 @@ namespace change
 			}
 			else 
 			{
-				values.insert({"penny",1});
-				values.insert({"nickel",5});
-				values.insert({"dime",10});
-				values.insert({"quarter",25});
+				values.insert({"Penny",1});
+				values.insert({"Nickel",5});
+				values.insert({"Dime",10});
+				values.insert({"Quarter",25});
 				values.insert({"Dollar1",100});
 				values.insert({"Dollar5",500});
 				values.insert({"Dollar10",1000});
@@ -53,7 +50,7 @@ namespace change
 				int val = B->second;
 				if (val != 0)
 				{
-					cout << key << " : " << val << endl;
+					cout << '\t' << key << " : " << val << endl;
 
 				}
 			}
@@ -121,14 +118,15 @@ namespace change
 		return ret_map;
 	}
 
-	void make_change(ChangeMap valueMap, ChangeMap *changeCounter,float amount)
+	void make_change(ChangeMap valueMap, ChangeMap *changeCounter,double amount)
 	{
 		int changeRemaining = 0;
 		int cent_value = (int)(amount*100); // convert to cents
 		while (true)
 		{
 			int delta = cent_value - changeRemaining; // keep a running tally
-			if (delta == 0 || changeRemaining > cent_value)
+			// if (delta == 0 || changeRemaining > cent_value)
+			if (delta == 0)
 				break;
 			auto filtered = filterMap(delta,valueMap); 
 			auto max_val = selectMax(filtered);

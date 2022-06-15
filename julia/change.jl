@@ -21,7 +21,7 @@ function print_dict(coins::Base.Array{String,1},d::Base.Dict{String,Int64})
 	for c in coins
 		v = get(d,c,0) ## retrieve the value from the map
 		if v != 0
-			println("$c: $v")
+			println("\t$c: $v")
 		end
 	end
 end
@@ -58,11 +58,15 @@ end
 function main(amt::String)
 	coins = ["Penny","Nickel","Dime","Quarter","Dollar1","Dollar5","Dollar10","Dollar20","Dollar50","Dollar100"]
 	amt_val = parse(Float32,amt)
+	println("For \$$amt:")
 	cent_amt = Integer(round(amt_val * 100,digits = 0))
 	filtered_dict = make_change(cent_amt)
 	coins_filt = filter(c -> c in keys(filtered_dict),coins)
 	print_dict(coins_filt,filtered_dict)
+	println("====================================")
 end
 
 ## Run the script 
-main(ARGS[1])
+for a in ARGS
+	main(a)
+end
