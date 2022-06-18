@@ -6,40 +6,45 @@
 #define TABLESIZE 101
 #define MAXNAME 256
 
-
-// struct nlist(
-// 	struct nlist *next;
-// 	char *name;
-// 	char *defn;
-// );
 typedef struct {
 	char* item; // the name of the money
 	int value; // the value of money in cents
 	int n; // the number of occurences
 } money;
 
-money *hashtable[TABLESIZE] ;
 
+/**
+ * Hashcode which will serve as the index to insert something into the hashtable
+ */
 unsigned int hash(char *s)
 {
 	unsigned int hashval;
 	for (hashval=0;*s != '\0';s++)
 	{
-		hashval = *s + 31 * hashval;
+		hashval = *s + 31 * hashval; // 31 was an arbitray number, any prime would work 
 	}
 	return hashval % TABLESIZE; 
 }
 
-void init_hashtable() 
+/**
+ * Allocates a hashtable on the heap, returns a pointer to it
+ */
+money** create_hashtable() 
 {
+	money** hashtable;
+	hashtable = (money**)malloc(sizeof(money)*TABLESIZE);
 	int i;
 	for (i = 0; i < TABLESIZE; ++i)
 	{
 		hashtable[i] = NULL;
 	}
+	return hashtable;
 }
 
-bool insert(money *m)
+/**
+ * Insert an item into the hashtable based off of the hashcode 
+ */
+bool insert(money *m,money** hashtable)
 {
 	if (m == NULL)
 		return false;
@@ -51,7 +56,7 @@ bool insert(money *m)
 	return true;
 }
 
-void print_hashtable() 
+void print_hashtable(money** hashtable) 
 {
 	for (int i = 0;i < TABLESIZE; i++)
 	{
@@ -67,13 +72,16 @@ void print_hashtable()
 /**
  * Retrieve the item from the hashmap 
  */
-money* get(char* key)
+money* get(char* key,money **hashtable)
 {
 	unsigned int hashcode = hash(key);
 	return hashtable[hashcode];
 }
 
-int update_max(int amount) 
+/**
+ * Select the maximum value from the hashtable that is less than the argument amount
+ */
+int update_max(int amount,money **hashtable) 
 {
 	int val = 0;
 	char* key;
@@ -87,7 +95,7 @@ int update_max(int amount)
 		}
 	}
 	// now update the hashmap's n field to increase the frequency 
-	money* m = get(key);
+	money* m = get(key,hashtable);
 	if (m == NULL) {
 		printf("The key %s does not exist in the hashtable\n",key);
 		return;
@@ -96,7 +104,10 @@ int update_max(int amount)
 	return m->value;
 }
 
-void make_change(float amount) 
+/**
+ * Find the optimal amount of change and print out the results
+ */
+void make_change(float amount, money **hashtable) 
 {
 	int amount_int = (int)(amount * 100);
 	int change_amount = 0;
@@ -105,11 +116,11 @@ void make_change(float amount)
 
 	while (delta > 0)
 	{
-		int amt = update_max(delta);
+		int amt = update_max(delta,hashtable);
 		change_amount += amt;
 		delta = amount_int - change_amount;
 	}
 	printf("For $%0.2f:\n",amount);
-	print_hashtable();
+	print_hashtable(hashtable);
 	printf("====================================\n");
 }
