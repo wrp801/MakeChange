@@ -20,7 +20,6 @@ typedef struct {
 
 money *hashtable[TABLESIZE] ;
 
-
 unsigned int hash(char *s)
 {
 	unsigned int hashval;
