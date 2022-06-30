@@ -1,3 +1,4 @@
+using ArgParse
 ## Multiple dispatch at work! 
 ## Overload the Base max function to find the pair with the max value
 function Base.max(d::Base.Dict{String,Int64})
@@ -55,6 +56,18 @@ function make_change(amt::Base.Integer)
 
 end
 
+function parse_commandline()
+	s = ArgParseSettings()
+
+	@add_arg_table s begin 
+		"-c"
+			help = "Will read arguments from a file instead of the command line"
+			action = :store_true
+	end
+	return parse_args(s)
+end
+
+
 function main(amt::String)
 	coins = ["Penny","Nickel","Dime","Quarter","Dollar1","Dollar5","Dollar10","Dollar20","Dollar50","Dollar100"]
 	amt_val = parse(Float32,amt)
@@ -66,7 +79,30 @@ function main(amt::String)
 	println("====================================")
 end
 
+## Add additional method to the main function
+function main()
+	coins = ["Penny","Nickel","Dime","Quarter","Dollar1","Dollar5","Dollar10","Dollar20","Dollar50","Dollar100"]
+	file_data = ""
+	file_data = read("args.txt",String)
+	file_split = split(file_data,'\n')
+	for args in file_split 
+		if args == ""
+			continue
+		end
+		amt_val = parse(Float32,args)
+		cent_amt = Integer(round(amt_val * 100,digits = 0))
+		filtered_dict = make_change(cent_amt)
+		coins_filt = filter(c -> c in keys(filtered_dict),coins)
+		# print_dict(coins_filt,filtered_dict)
+		# println("====================================")
+	end
+end
+
 ## Run the script 
-for a in ARGS
-	main(a)
+if length(parse_commandline()) > 0
+	@time main()
+else
+	for a in ARGS 
+		main(a)
+	end
 end

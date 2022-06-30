@@ -1,4 +1,7 @@
+import argparse
 from sys import argv
+from argparse import ArgumentParser
+from datetime import datetime
 def get_max_val(dict_to_search:dict) -> str:
     """
     Returns the key of the max value of a dict
@@ -11,7 +14,7 @@ def print_map(dict_to_print:dict) -> None:
         print(f"\t{k}: {v}")
     
 
-def change(amt:float):
+def change(amt:float,print_to_screen = True):
     """
     This will make the optimal amount of change given the amount. The amount is represented in terms of dollars
     """
@@ -38,16 +41,43 @@ def change(amt:float):
         change_amt += mapping[max_key]
         change_map[max_key] += 1
     
-    print_map(change_map)
-    print("====================================")
+    if print_to_screen:
+        print_map(change_map)
+        print("====================================")
     return change_amt
 
-if __name__  == '__main__':
-    for (i,arg) in enumerate(argv):
-        if i == 0:
-            continue
-        amt = float(arg) ## convert command line args to float
-        print(f"For ${amt}:")
-        amt = round(amt * 100,0) ## convert the value to cents, and round just in case of floating point errors 
-        change(amt)
+def read_args(file:str) -> list:
+    # ret_list = []
+    with open(file,'r') as f:
+        line = f.read().split('\n')
+    ret_list = list(map(lambda x: round(float(x),2),line)) 
 
+    return list(map(lambda x: round(x * 100,0),ret_list))
+
+def write_output(args:list) -> None:
+    begin_time = datetime.now()
+    for arg in args:
+        change(arg,False)
+    end_time = datetime.now()
+
+    print(f"Python took {end_time - begin_time} to run")
+    
+        
+
+if __name__  == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument('-c','--compare',
+    help= 'Will read from the args.txt file instead of reading arguments from the command line',
+    action = 'store_true')
+    args = parser.parse_args()
+    if args.compare:
+        text_args = read_args('args.txt')
+        write_output(text_args)
+    else:
+        for (i,arg) in enumerate(argv):
+            if i == 0:
+                continue
+            amt = float(arg) ## convert command line args to float
+            print(f"For ${amt}:")
+            amt = round(amt * 100,0) ## convert the value to cents, and round just in case of floating point errors 
+            change(amt)
