@@ -98,7 +98,8 @@ int update_max(int amount,money **hashtable)
 	money* m = get(key,hashtable);
 	if (m == NULL) {
 		printf("The key %s does not exist in the hashtable\n",key);
-		return;
+		// return -1;
+		exit(1);
 	}
 	m->n++;
 	return m->value;
@@ -112,7 +113,6 @@ void make_change(float amount, money **hashtable)
 	int amount_int = (int)(amount * 100);
 	int change_amount = 0;
 	int delta = amount_int - change_amount;
-	// printf("The amount_int is %d and the change is %d and the delta is %d \n",amount_int,change_amount,delta);
 
 	while (delta > 0)
 	{
@@ -120,7 +120,4 @@ void make_change(float amount, money **hashtable)
 		change_amount += amt;
 		delta = amount_int - change_amount;
 	}
-	printf("For $%0.2f:\n",amount);
-	print_hashtable(hashtable);
-	printf("====================================\n");
 }
