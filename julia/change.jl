@@ -1,5 +1,4 @@
 using ArgParse
-## Multiple dispatch at work! 
 ## Overload the Base max function to find the pair with the max value
 function Base.max(d::Base.Dict{String,Int64})
 	ret_val = 0 ## will be updated

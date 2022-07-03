@@ -1,6 +1,11 @@
 use std::collections::HashMap;
 use std::env;
+use std::fs::File;
+use std::io::{self, BufRead};
+use std::path::Path;
+use std::time::Instant;
 
+// use clap::{Arg,App};
 
 fn filter_map(input: HashMap<String,i32>,amount:i32) -> HashMap<String,i32> {
     /*
@@ -84,23 +89,52 @@ fn make_change(amt:i32) -> HashMap<String,i32> {
     return change_counter;
 }
 
+fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where P: AsRef<Path>, {
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
+}
+
 fn main() {
+
     let args: std::vec::Vec<_> = env::args().collect();
-    if args.len() == 1 {
-        println!("Error: Please enter a value to find the optimal value of change in USD");
-        return;
+    
+    // if the 
+    if args.len() == 2 {
+        for a in args {
+            if a == "-c" {
+                let now = Instant::now();
+                // read from the file
+                if let Ok(lines) = read_lines("args.txt") {
+                    for line in lines {
+                        if let Ok(amt) = line {
+                            let new_amt:f64 = amt.parse().unwrap();
+                            let amt_int:i32 = (new_amt * 100.00) as i32;  // convert to int and to cents
+                            make_change(amt_int);
+                        }
+                    }
+                }
+                let done = now.elapsed();
+                println!("Rust took {:.2?} to run",done);
+            }
+        }
     }
+    else {
+        if args.len() == 1 {
+            println!("Error: Please enter a value to find the optimal value of change in USD");
+            return;
+        }
 
-    let len = args.len();
-    for i in 1..len {
-        let amt = &args[i]; // get the amount as a str type
-        let new_amt:f64 = amt.parse().unwrap(); // convert amount to a double
-        let amt_int:i32 = (new_amt * 100.00) as i32;  // convert to int and to cents
-        println!("Amount is {}",amt_int);
+        let len = args.len();
+        for i in 1..len {
+            let amt = &args[i]; // get the amount as a str type
+            let new_amt:f64 = amt.parse().unwrap(); // convert amount to a double
+            let amt_int:i32 = (new_amt * 100.00) as i32;  // convert to int and to cents
 
-        let result = make_change(amt_int);
-        println!("For ${}:",new_amt);
-        print_map(result);
-        println!("====================================");
+            let result = make_change(amt_int);
+            println!("For ${}:",new_amt);
+            print_map(result);
+            println!("====================================");
+        }
     }
 }
