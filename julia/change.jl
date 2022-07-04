@@ -1,4 +1,5 @@
 using ArgParse
+using Dates
 ## Overload the Base max function to find the pair with the max value
 function Base.max(d::Base.Dict{String,Int64})
 	ret_val = 0 ## will be updated
@@ -99,7 +100,12 @@ end
 
 ## Run the script 
 if length(parse_commandline()) > 0
-	@time main()
+	start = now()	
+	# @time main()
+	main()
+	finish = now()
+	elapsed = finish - start
+	println("Julia took $elapsed to run")
 else
 	for a in ARGS 
 		main(a)

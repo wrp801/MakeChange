@@ -1,3 +1,4 @@
+
 all:
 	gcc change.c -o change
 
