@@ -51,29 +51,13 @@ impl Money {
     }
 }
 
-// need to implement hashing for the Money Enum
-// impl Hash for Money {
-//     fn hash<H: Hasher>(&self, state: &mut H) {
-//         match self {
-//             Money::get_value() 
-//
-//         }
-//
-//     }
-//     
-//
-// }
-
-// need to implement PartialEq for the Money Enum
-// impl PartialEq for Money {}
-
 #[derive(Debug)]
 pub struct Counter {
-    values: HashMap<Money, i32>
+    pub values: HashMap<Money, i32>
 }
 
 impl Counter {
-    pub fn new(&self) {
+    pub fn new() -> Self {
         let mut tmp_map = HashMap::new();
         tmp_map.insert(Money::Penny, 0);
         tmp_map.insert(Money::Nickel, 0);
@@ -85,6 +69,16 @@ impl Counter {
         tmp_map.insert(Money::Dollar20, 0);
         tmp_map.insert(Money::Dollar50, 0);
         tmp_map.insert(Money::Dollar100, 0);
+        Self {
+            values: tmp_map,
+        }
+    }
+
+    pub fn increase(&mut self, money:Money) {
+        let entry = self.values.entry(money).or_insert(0);
+        *entry += 1;
+
+
     }
 }
 
