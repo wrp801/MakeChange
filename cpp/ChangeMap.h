@@ -1,12 +1,47 @@
 #include <map>
 #include <iostream>
+#include <unordered_map>
 using namespace std;
 namespace change 
 {
+
+	// struct ChangeMap
+	// {
+	// 	map<string,int>values;
+
+	// 	void populateEmptyMap(map<string,int>) 
+	// 	{
+	// 		values.insert({"Penny",0});
+	// 		values.insert({"Nickel",0});
+	// 		values.insert({"Dime",0});
+	// 		values.insert({"Quarter",0});
+	// 		values.insert({"Dollar1",0});
+	// 		values.insert({"Dollar5",0});
+	// 		values.insert({"Dollar10",0});
+	// 		values.insert({"Dollar20",0});
+	// 		values.insert({"Dollar50",0});
+	// 		values.insert({"Dollar100",0});
+	// 	}
+
+	// 	void populateMap(map<string,int>)
+	// 	{
+	// 		values.insert({"Penny",1});
+	// 		values.insert({"Nickel",5});
+	// 		values.insert({"Dime",10});
+	// 		values.insert({"Quarter",25});
+	// 		values.insert({"Dollar1",100});
+	// 		values.insert({"Dollar5",500});
+	// 		values.insert({"Dollar10",1000});
+	// 		values.insert({"Dollar20",2000});
+	// 		values.insert({"Dollar50",5000});
+	// 		values.insert({"Dollar100",10000});
+	// 	}
+	// };
+	
 	class ChangeMap
 	{
 		public:
-			map<string,int> values;
+			unordered_map<string,int> values;
 
 		ChangeMap(bool empty)
 		{
@@ -59,13 +94,13 @@ namespace change
 
 	}; // end class
 
-	map<string,int> filterMap(float amount,ChangeMap changeMap)
+	unordered_map<string,int> filterMap(float amount,ChangeMap changeMap)
 	{
 		/**
 		 * Helper function to return a map with values that are greater than the amount argument
 		 * 
 		 */
-		map<string,int> retmap;
+		unordered_map<string,int> retmap;
 		for (auto B = changeMap.values.begin(),E = changeMap.values.end(); B!=E; ++B)
 		{
 			string coin =  B->first;
@@ -79,9 +114,9 @@ namespace change
 	}
 
 	// Overload function to accept an int as well
-	map<string,int> filterMap(int amount, ChangeMap changeMap)
+	unordered_map<string,int> filterMap(int amount, ChangeMap changeMap)
 	{
-		map<string,int> retmap;
+		unordered_map<string,int> retmap;
 		for (auto B = changeMap.values.begin(),E = changeMap.values.end(); B!=E; ++B)
 		{
 			string coin =  B->first;
@@ -95,7 +130,7 @@ namespace change
 
 	}
 
-	map<string,int> selectMax(map<string,int> values)
+	unordered_map<string,int> selectMax(unordered_map<string,int> values)
 	{
 		/**
 		 * Helper function to select the max value from the change map
@@ -113,7 +148,7 @@ namespace change
 				max_key = temp_string;
 			}
 		}
-		map<string,int> ret_map;
+		unordered_map<string,int> ret_map;
 		ret_map[max_key] = max_val;
 		return ret_map;
 	}
@@ -128,8 +163,8 @@ namespace change
 			// if (delta == 0 || changeRemaining > cent_value)
 			if (delta == 0)
 				break;
-			auto filtered = filterMap(delta,valueMap); 
-			auto max_val = selectMax(filtered);
+			unordered_map<string,int> filtered = filterMap(delta,valueMap); 
+			unordered_map<string,int> max_val = selectMax(filtered);
 			for (auto B = max_val.begin(), E = max_val.end(); B != E; ++B)
 			{
 				string s = B->first;

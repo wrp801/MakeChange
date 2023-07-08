@@ -2,6 +2,7 @@ use std::{collections::HashMap, hash::Hasher};
 use derivative::Derivative;
 #[derive(Debug, Eq, Derivative)]
 #[derive(PartialEq,Hash)]
+#[derive(Clone, Copy)]
 pub enum Money {
     Penny,
     Nickel,
